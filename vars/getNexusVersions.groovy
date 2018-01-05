@@ -9,6 +9,7 @@
  * https://stackoverflow.com/questions/2793150/using-java-net-urlconnection-to-fire-and-handle-http-requests?rq=1
  * https://stackoverflow.com/questions/3242335/how-to-use-ssl-with-a-self-signed-certificate-in-groovy
  *
+ *Author: Sean Wilbur (Sean.Wilbur@perficient.com)
  */
 import groovy.json.JsonSlurper
 import java.sql.Timestamp

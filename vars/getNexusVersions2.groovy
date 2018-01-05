@@ -6,6 +6,7 @@
  * N.B
  *   See the swagger api for json format http://nexus-server/swagger-ui/
  *
+*Author: Sean Wilbur (Sean.Wilbur@perficient.com)
  */
 import groovy.json.JsonSlurper
 import java.sql.Timestamp
