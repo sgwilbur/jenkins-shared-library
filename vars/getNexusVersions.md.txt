@@ -1,6 +1,6 @@
 # getNexusVersions
 
-Helper class to query a Nexus 3 servers via the REST API to return the current assets in a given respository.
+Helper class to query a Nexus v3.x servers via the REST API to return the current assets in a given repository.
 
 There are some assumptions built into this shared library.
 

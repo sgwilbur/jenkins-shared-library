@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-/* Simple script to create a list of versions available from a specific Nexus
+/* Simple script to create a list of versions available from a specific Nexus v3.x
  * repository. Avoid using the built in HTTP clients as the keystore trusting is
  * not working as expected
  *
