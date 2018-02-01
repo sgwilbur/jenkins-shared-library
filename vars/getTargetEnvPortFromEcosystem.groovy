@@ -15,7 +15,7 @@ def call( deploy_env, prefix = "env_" ){
       target_port = app.get(env_match_string).get('PORT')
     }
   }
-  if ( target_application ){
+  if ( target_port ){
     return target_port
   }else{
     throw new Exception( "No Matching application port found matching [${env_match_string}]")
