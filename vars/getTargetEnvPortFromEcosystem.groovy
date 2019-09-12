@@ -1,6 +1,5 @@
 /*
-Author: Geoffrey Rosenthal (Geoffrey.Rosenthal@perficient.com)
-Modified from Sean Wilbur's (Sean.Wilbur@perficient.com) getTargetEnvFromEcosystem
+Authors: Geoffrey Rosenthal (Geoffrey.Rosenthal@perficient.com) Sean Wilbur's (Sean.Wilbur@perficient.com)
 */
 
 def call( deploy_env, prefix = "env_" ){
@@ -9,7 +8,7 @@ def call( deploy_env, prefix = "env_" ){
   def ecosystem = readJSON file: 'ecosystem.json'
   // Found silly issue where the default GStringImpl cannot be used to
   // directly compare to the values that are default String objects
-  def env_match_string = "${prefix}${DEPLOY_ENV}" as String
+  def env_match_string = "${prefix}${deploy_env}" as String
   ecosystem.apps.each{ app ->
     if( app.keySet().contains( env_match_string ) ){
       target_port = app.get(env_match_string).get('PORT')

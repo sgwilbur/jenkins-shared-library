@@ -1,2 +1,3 @@
 # jenkins-shared-library
-Shared Jenkins Library for Perficient Jenkins examples
+
+Some examples shared library helpers that we at Perficient have put together on client engagements.
