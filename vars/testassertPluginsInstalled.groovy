@@ -3,18 +3,6 @@
 GroovyShell shell = new GroovyShell()
 def assertPluginsInstalled = shell.parse(new File('assertPluginsInstalled.groovy'))
 
-// plugins = [
-//   'artifactory': '3.3.2',
-//   'workflow-basic-steps': '2.18',
-//   'scm-api': '2.6.3',
-//   'pipeline-utility-steps': '2.3.0',
-//   'maven-plugin': '3.4',
-//   'warnings': '5.0.1',
-//   'build-timestamp': '1.0.3',
-//   'config-file-provider': '3.6.2'
-// ]
-
-//
 pluginDependencies = [
   'pipeline-utility-steps': '',       // installed at any version
   'scm-api': '2.6.3',                 // installed and at version 2.6.3
@@ -26,7 +14,7 @@ pluginDependencies = [
   'maven-plugin': '<=3.4'             // installed and less than or eq 3.4
   ]
 
-assertPluginsInstalled.call( pluginDependencies )
+assertPluginsInstalled.call( requiredPlugins: pluginDependencies, mock: true, verbosity: 0 )
 
 
 // Should fail with plugin not found exception

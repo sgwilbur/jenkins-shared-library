@@ -6,7 +6,6 @@ The intent of this helper is to provide a simple way to declare upfront that thi
 
 Semantic Version
 
-
 NPM Stype dependency filters
 online tester to validate usage https://semver.npmjs.com/
 
@@ -21,27 +20,55 @@ online tester to validate usage https://semver.npmjs.com/
 only support simple 1.0.0 type versions not the other decorators as
 Jenkins plugins do not allow full Semantic Versioning
 
+Also this plugin does not support the more complex range syntax like NPM.
+
 ## Requirements
 
-Requires script approval of the following:
+If not running as a system Shared Library this requires script approval of the following:
+
 method hudson.PluginManager getPlugins
 method hudson.PluginWrapper getShortName
 method hudson.PluginWrapper getVersion
 method jenkins.model.Jenkins getPluginManager
 staticMethod jenkins.model.Jenkins getInstance
 
+See your [https://jenkins.company.com/scriptApproval/](https://jenkins.company.com/scriptApproval/)
+
 ## Usage
 
+Sample usage:
 
 
-    assertPluginsInstalled(
-      [
-        'build-timestamp', '^1',
-        'pipeline-utility-steps', '<2.18',
+    @Library('shared-utilities@development') _
+
+    pluginDependencies = [
+      'pipeline-utility-steps': '',       // installed at any version
+      'scm-api': '2.6.3',                 // installed and at version 2.6.3
+      'build-timestamp':'^1.0.3',         // installed and at version 1.*
+      'warnings':'~5.0.0',                // installed and at version 5.0.*
+      'config-file-provider': '>3.6.1',   // installed and greater than 3.6.1
+      'pipeline-utility-steps': '>=2.3.0',// installed and greater than or eq
+      'workflow-basic-steps': '<2.20',    // installed and less than 2.20
+      'maven-plugin': '<=3.4'             // installed and less than or eq 3.4
       ]
-    )
+
+    assertPluginsInstalled( requiredPlugins: pluginDependencies )
+
+    pipeline{
+        agent any
+
+        stages{
+            stage( 'one' ){
+                steps{
+                    sh "echo 'Running stage after making sure required plugins are installed'"
+                }
+            }
+        }
+    }
+
 
 ### Reference
+ * https://jenkins.io/doc/book/managing/script-approval/
  * https://semver.org/
  * https://semver.npmjs.com/
  * https://stackoverflow.com/questions/43494302/how-to-test-whether-a-jenkins-plugin-is-installed-in-pipeline-dsl-groovy

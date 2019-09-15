@@ -2,10 +2,16 @@
  * @author Sean G Wilbur sgwilbur
  **/
 def call( Map params ){
-
   // helper for local debugging
-  def mock = false
+  def verbosity = (params.get('verbosity') ?: 0).toInteger()
+  def mock = (params.get('mock') ?: 0).asBoolean()
+  def requiredPlugins = (params.get('requiredPlugins') ?: [:])
 
+  if( verbosity > 2 ){
+    println "vebosity: ${verbosity}"
+    println "mock: ${mock}"
+    println "${requiredPlugins}"
+  }
   def plugins = [:]
 
   // provide a simple map for testing
@@ -21,22 +27,20 @@ def call( Map params ){
       'config-file-provider': '3.6.2'
     ]
   }else{
-    // Get currently installed plugins
-    pluginWrappers = jenkins.model.Jenkins.instance.getPluginManager().getPlugins()
-    // plugins.each {println "${it.getShortName()}: ${it.getVersion()}"}
-    plugins = pluginWrappers.collectEntries { [(it.getShortName()):it.getVersion()] }
-    // pluginWrappers is non-serializable so deallocate explicitly asap
-    pluginWrappers = null
+    // Get currently installed plugins and collect name:version installed
+    // less readable but closure will clean up intermediate for us automatically
+    // N.B. pluginWrappers is non-serializable so deallocate explicitly asap
+    plugins = jenkins.model.Jenkins.instance.getPluginManager().getPlugins().collectEntries { [(it.getShortName()):it.getVersion()] }
   }
 
-  print "Running with installed plugins: ${plugins}"
+  print "Currently installed plugins: ${plugins}"
 
   // capture the pieces of the version
   // [COMP]MAJOR[.MINOR[.PATCH]]
   def maxVersionPlaces = 6
   def pattern = ~/^([\^><~]?[=]?)?(\d{1,6})(?:\.(\d{1,6}))?(?:\.(\d{1,6}))?$/
 
-  params.each{
+  requiredPlugins.each{
 
     def pluginCheckPassing = false
     def pluginCheckMsg = ''
