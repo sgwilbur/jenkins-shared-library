@@ -2,17 +2,14 @@
  * @author Sean G Wilbur sgwilbur
  **/
 def call( Map params ){
+
   // helper for local debugging
   def mock = false
 
-  def plugins
+  def plugins = [:]
 
-  if( !mock ){
-    // Get currently installed plugins
-    plugins = jenkins.model.Jenkins.instance.getPluginManager().getPlugins()
-    // plugins.each {println "${it.getShortName()}: ${it.getVersion()}"}
-  }else{
-    // mock for testing
+  // provide a simple map for testing
+  if( mock  ){
     plugins = [
       'artifactory': '3.3.2',
       'workflow-basic-steps': '2.18',
@@ -23,7 +20,16 @@ def call( Map params ){
       'build-timestamp': '1.0.3',
       'config-file-provider': '3.6.2'
     ]
+  }else{
+    // Get currently installed plugins
+    pluginWrappers = jenkins.model.Jenkins.instance.getPluginManager().getPlugins()
+    // plugins.each {println "${it.getShortName()}: ${it.getVersion()}"}
+    plugins = pluginWrappers.collectEntries { [(it.getShortName()):it.getVersion()] }
+    // pluginWrappers is non-serializable so deallocate explicitly asap
+    pluginWrappers = null
   }
+
+  print "Running with installed plugins: ${plugins}"
 
   // capture the pieces of the version
   // [COMP]MAJOR[.MINOR[.PATCH]]
@@ -43,24 +49,20 @@ def call( Map params ){
     // println " pluginVersionFilter  : [${pluginVersionFilter}]"
 
     // first test for this plugin first
-    if( !mock ){
-    // FIXME: not using getShortName for mock
-      foundPlugin = plugins.find {"${it.getShortName()}" == "${pluginName}" }
-    }else{
-    // mock version
-      foundPlugin = plugins.find { key, value -> "${key}" == "${pluginName}" }
-    }
+    foundPlugin = plugins.find { key, value -> "${key}" == "${pluginName}" }
+
     // if the plugin is not found we are in a failure state
     // TODO: should we collect all failures or just fail out hard here?
     if( !foundPlugin ){
       pluginCheckPassing = false
       pluginCheckMsg =  "Plugin ${pluginName} is not installed, this pipline requires it to be installed with version filter ${pluginVersionFilter}"
+      pluginCheckMsg += "\nInstalled Plugins: ${plugins}"
       println pluginCheckMsg
       //error msg
       throw new Exception(pluginCheckMsg)
     }
 
-    println "      installedPlugin : ${foundPlugin}"
+    //println "      installedPlugin : ${foundPlugin}"
 
     // when no version filter is supplied pluginVersionFilter will be null,
     // and can continue as this we are done installed was the only requirement.
@@ -69,14 +71,8 @@ def call( Map params ){
     if( pluginVersionFilter ){
       // capture the pieces of the version, non matched captures will be null
       // [COMP]MAJOR[.MINOR[.PATCH]]
-      def requiredPluginMatch = pluginVersionFilter =~ pattern
-
-      def installedPluginMatch
-      if( !mock ){
-        installedPluginMatch = foundPlugin.getVersion() =~ pattern
-      }else{
-        installedPluginMatch = foundPlugin.getValue() =~ pattern
-      }
+      def requiredPluginMatch   = pluginVersionFilter     =~ pattern
+      def installedPluginMatch  = foundPlugin.getValue()  =~ pattern
 
       if( requiredPluginMatch ){
         requiredPluginSemVersionParts = requiredPluginMatch[0][1..4]
@@ -124,7 +120,6 @@ def call( Map params ){
           pluginCheckPassing = ( majorReq == majorIns ) && ( (minorReq)? minorReq == minorIns : true )
           break
         case '>':  // greater than
-
           pluginCheckMsg = "Failed: Greather than version comparison " + pluginCheckMsg
           pluginCheckPassing = installedVersionMask > requiredVersionMask
           break
@@ -154,7 +149,7 @@ def call( Map params ){
     // raise or collect error for each plugin
     if( pluginCheckPassing ){
       // success
-      println "Success - Requirements met for [${pluginName}] with filter [${pluginVersionFilter}]."
+      println "Success - Requirements met for [${pluginName}] with filter [${pluginVersionFilter}] by [${foundPlugin}]"
     }else{
       println "Failure - Requirements NOT met for [${pluginName}] with filter [${pluginVersionFilter}]."
       println pluginCheckMsg
