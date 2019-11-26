@@ -6,10 +6,10 @@ def call( String issueCode, String message=''){
   issuesResourceString = libraryResource('issues.yml')
   issuesMap = readYaml text: issuesResourceString
 
-  echo "issuesMap: ${issuesMap}"
+  //echo "issuesMap: ${issuesMap}"
 
   // only raise issue if found
-  if( issuesMap && issuesMap.containsKey( 'issues' ) && issuesMap.errors.containsKey( issueCode ) ){
+  if( issuesMap && issuesMap.containsKey( 'issues' ) && issuesMap['issues'].containsKey( issueCode ) ){
     issue = issuesMap.errors.get(issueCode)
     message = "${issueCode} - ${issue.message}"
     // determine if we need to warn or end execution
