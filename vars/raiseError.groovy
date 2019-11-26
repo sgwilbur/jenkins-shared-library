@@ -1,5 +1,7 @@
-def call( errorCode, message=''){
+import com.perficient.devops.log
 
-  echo "raiseError:: ${message}"
+def call( Map params = [:]){
+  
+  echo PerficientMessage.error( )
 
 }
