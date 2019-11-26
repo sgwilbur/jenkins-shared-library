@@ -6,7 +6,9 @@ def call( String errorCode, String message=''){
   issuesMap = readYaml text: libraryResource('issues.yml')
 
   // only raise issue if found
-  if( issuesmap.containsKey( errorCode ) ){
+  if( issuesMap.containsKey( 'errors' ) && issuesMap.errors.containsKey( errorCode ) ){
+    issue = issuesMap.errors.get(errorCode)
+    message = "${issueCode} "
     echo PerficientMessage.log(message )
   }else{
     // when errorCode not found, degrade to standard error
