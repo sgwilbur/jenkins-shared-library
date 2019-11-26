@@ -2,9 +2,17 @@ import com.perficient.devops.log.*
 
 def call( String errorCode, String message=''){
 
-  issueResource = libraryResource('issues.yml')
+  // load the issueMap from the resources file
+  issuesMap = readYaml text: libraryResource('issues.yml')
 
-  echo "${issueResource}"
-
-  echo PerficientMessage.knownIssue(errorCode, message )
+  // only raise issue if found
+  if( issuesmap.containsKey( errorCode ) ){
+    echo PerficientMessage.log(message )
+  }else{
+    // when errorCode not found, degrade to standard error
+    // append a message here to indicate a failed error code lookup
+    message = "Error finding known issue ${issueCode} degrading to standard error. " + message
+    echo PerficientMessage.error(message)
+  }
+  error(message)
 }
