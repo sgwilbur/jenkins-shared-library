@@ -12,7 +12,7 @@ class PerficientMessage implements Serializable {
 
   static String error( String message = ''){
     // any additional handling we can do here ?
-    return DTCCMessage.formattedMessage( "ERROR - ${message}")
+    return PerficientMessage.formattedMessage( "ERROR - ${message}")
   }
 
   static String knownIssue( String issueCode, String message = ''){
@@ -21,10 +21,10 @@ class PerficientMessage implements Serializable {
 
     if( issueFound ){
       def catalogMsg = "Known issues ABC"
-      return DTCCMessage.formattedMessage(" KNOWN ISSUE - ${issueCode} - ${catalogMsg}" )
+      return PerficientMessage.formattedMessage(" KNOWN ISSUE - ${issueCode} - ${catalogMsg}" )
     } else {
       message = "Failed to lookup known issue ${issueCode} passing on to standard error handlers" + message
-      return DTCCMessage.error( message )
+      return PerficientMessage.error( message )
     }
   }
 
