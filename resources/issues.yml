@@ -1,0 +1,16 @@
+---
+
+categories:
+  - scm
+  - build
+  - test
+  - deploy
+
+errors:
+  ice001:
+    category: scm
+    errr_occurs:
+    error_message: |
+      Whirring sound, then sorry no ice.
+    message: |
+     Error making ice from your git server, try your refridgerator instead.
