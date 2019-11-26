@@ -4,7 +4,7 @@ def call( String issueCode, String message=''){
 
   // load the issueMap from the resources file
   issuesResourceString = libraryResource('issues.yml')
-  issuesMap = readYaml text: issueResourceString
+  issuesMap = readYaml text: issuesResourceString
 
   echo "issuesMap: ${issueMap}"
 
