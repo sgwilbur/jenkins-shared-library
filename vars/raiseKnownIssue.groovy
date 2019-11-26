@@ -2,11 +2,11 @@ import com.perficient.devops.log.*
 
 def call( String issueCode, String message=''){
 
-  // load the issueMap from the resources file
+  // load the issuesMap from the resources file
   issuesResourceString = libraryResource('issues.yml')
   issuesMap = readYaml text: issuesResourceString
 
-  echo "issuesMap: ${issueMap}"
+  echo "issuesMap: ${issuesMap}"
 
   // only raise issue if found
   if( issuesMap && issuesMap.containsKey( 'issues' ) && issuesMap.errors.containsKey( issueCode ) ){
