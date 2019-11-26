@@ -16,13 +16,13 @@ class PerficientMessage implements Serializable {
   }
 
   static String knownIssue( String issueCode, String message = ''){
+    def issueFound = true
     // if issueCode is not found or invalid, revert to error
 
     if( issueFound ){
       def catalogMsg = "Known issues ABC"
       return DTCCMessage.formattedMessage(" KNOWN ISSUE - ${issueCode} - ${catalogMsg}" )
-    else
-    {
+    } else {
       message = "Failed to lookup known issue ${issueCode} passing on to standard error handlers" + message
       return DTCCMessage.error( message )
     }
