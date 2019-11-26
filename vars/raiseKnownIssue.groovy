@@ -1,5 +1,7 @@
+import com.perficient.devops.log.*
+
 def call( errorCode, message=''){
 
-  echo DTCCMessage.error(message)
+  echo PerficientMessage.error(message)
 
 }

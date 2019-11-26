@@ -1,7 +1,7 @@
-import com.perficient.devops.log
+import com.perficient.devops.log.*
 
-def call( Map params = [:]){
-  
-  echo PerficientMessage.error( )
+def call( String message = ''){
+
+  echo PerficientMessage.error( message )
 
 }
