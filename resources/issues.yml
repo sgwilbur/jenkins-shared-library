@@ -6,7 +6,7 @@ categories:
   - test
   - deploy
 
-errors:
+issues:
   ice001:
     category: scm
     errr_occurs:

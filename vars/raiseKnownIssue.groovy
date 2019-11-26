@@ -1,14 +1,14 @@
 import com.perficient.devops.log.*
 
-def call( String errorCode, String message=''){
+def call( String issueCode, String message=''){
 
   // load the issueMap from the resources file
   issuesMap = readYaml text: libraryResource('issues.yml')
 
   // only raise issue if found
-  if( issuesMap.containsKey( 'errors' ) && issuesMap.errors.containsKey( errorCode ) ){
-    issue = issuesMap.errors.get(errorCode)
-    message = "${issueCode} "
+  if( issuesMap.containsKey( 'issues' ) && issuesMap.errors.containsKey( issueCode ) ){
+    issue = issuesMap.errors.get(issueCode)
+    message = "${issueCode} - ${issue.message}"
     echo PerficientMessage.log(message )
   }else{
     // when errorCode not found, degrade to standard error
