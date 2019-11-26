@@ -21,7 +21,7 @@ class PerficientMessage implements Serializable {
 
     if( issueFound ){
       def catalogMsg = "Known issues ABC"
-      return PerficientMessage.formattedMessage(" KNOWN ISSUE - ${issueCode} - ${catalogMsg}" )
+      return PerficientMessage.formattedMessage(" KNOWN ISSUE - ${issueCode} - ${catalogMsg} - ${message}" )
     } else {
       message = "Failed to lookup known issue ${issueCode} passing on to standard error handlers" + message
       return PerficientMessage.error( message )

@@ -1,7 +1,5 @@
 import com.perficient.devops.log.*
 
-def call( errorCode, message=''){
-
-  echo PerficientMessage.error(message)
-
+def call( String errorCode, String message=''){
+  echo PerficientMessage.knownIssue(errorCode, message )
 }
