@@ -1,4 +1,7 @@
+import com.perficient.devops.log.*
 
 def call( message ){
-  echo "log:: ${message}"
+
+  def formattedMessage = PerficientMessage.formattedMessage(message)
+  echo "log:: ${formattedMessage}"
 }
